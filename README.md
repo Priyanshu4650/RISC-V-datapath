@@ -25,11 +25,17 @@ The Verilog module final_pipeline has the following inputs and outputs:
 * ld_store - 2-bit output holding the load/store type of the instruction being executed
 
 # Implementation Details
+
+# Working
+
+In the first cycle, d_cache is set to store its initial values-45 and -20 and addressor the program counter is set to 0.the 256 bit instruction is split into 8 registers of 32 bits stored in theinstruction cache.as the 2nd posedge starts, the pip1(pipeline register stores the instructionfetched from the cache.current instruction is setto pip and program counter is increased by 1.in the next stage,we first check what type of instruction is fetchedif its I or L type the 2nd value is set too immediate , if its R type, the 2nd value is set tothe value in rs2. or if its S  type, B again takes immediate value and data cache address is set to that.in the next stage we see the ld_store value. if its 10 - its a load instructionand write value is taken from data cache.else if its store instruction we write into the data cache .if its neither the write value is set to resulkt from alu.and again stage is now set to stage 1 and the loop continues.
+
+
 The pipeline is implemented using a combination of registers and wires to store data between stages. The first pipeline register is used to store the instruction which is passed from the user side which is having a size of 32 - bits, which is later on used for storage of data wen moving from one stage to the other to prevent the loss of data. The input instruction is loaded into an instruction cache, and each instruction is fetched from the cache in the first stage of the pipeline. The instruction is then decoded in the second stage, and the register file is accessed to read the source operands. The ALU performs the operation in the third stage, and the result is stored in a register. In the fourth stage, memory is accessed for load/store instructions, and the result is written back to the register file.
 
-*Sub-modules are used to perform specific tasks such as decoding instructions or accessing the register file. The decoder_with_clk sub-module decodes the instruction in the first pipeline stage, while the reg_file sub-module accesses the register file based on the register numbers in the second pipeline stage. The alu_with_clk sub-module performs arithmetic operations on the operands in the third pipeline stage.
+* Sub-modules are used to perform specific tasks such as decoding instructions or accessing the register file. The decoder_with_clk sub-module decodes the instruction in the first pipeline stage, while the reg_file sub-module accesses the register file based on the register numbers in the second pipeline stage. The alu_with_clk sub-module performs arithmetic operations on the operands in the third pipeline stage.
 
-*The pipeline also implements an instruction cache and a data cache. The instruction cache is used to store instructions, while the data cache is used to store data accessed by load/store instructions. The memory addresses for the data cache are calculated based on the immediate value of the instruction being executed.
+* The pipeline also implements an instruction cache and a data cache. The instruction cache is used to store instructions, while the data cache is used to store data accessed by load/store instructions. The memory addresses for the data cache are calculated based on the immediate value of the instruction being executed.
 
 # Limitations
 * This implementation is a simple pipeline and does not include features such as forwarding or branch prediction. It assumes that instructions are executed in order and does not handle hazards. Additionally, this implementation does not include all instructions in the RISC-V instruction set architecture.
