@@ -62,3 +62,31 @@ The Verilog module decoder_with_clk has the following inputs and outputs:
 
 # Limitations
 * This implementation assumes that all instructions are 32 bits in length and does not handle unrecognized opcodes or invalid instruction formats. It also does not perform any validation on the register numbers or immediate values extracted from the instruction. Additionally, this implementation does not include all instructions in the RISC-V instruction set architecture.
+
+# Verilog Register File
+This Verilog module implements a register file for a RISC-V instruction set architecture. The reg_file module takes in two source register numbers, one destination register number, a clock signal, a reset signal, an enable signal, an enable write signal, and a write value. It outputs two read values from the register file.
+
+# Inputs and Outputs
+The Verilog module reg_file has the following inputs and outputs:
+
+# Inputs
+* rs1 - 5-bit input holding the number of the first source register
+* rs2 - 5-bit input holding the number of the second source register
+* rd - 5-bit input holding the number of the destination register
+* enable_write - input control signal for enabling write operation
+* write_value - 32-bit input holding the value to be written to the register file
+* clk - clock signal
+* rst - reset signal
+enable - input control signal for enabling read operation
+# Outputs
+* read_value_1 - 32-bit output holding the value of the first source register read from the register file
+* read_value_2 - 32-bit output holding the value of the second source register read from the register file
+# Implementation Details
+* The reg_file module uses a 32x32-bit register file to store register values. The input enable_write is used to enable writing to the register file. The module checks if enable_write is 1, and if so, it writes write_value to the register file at the address specified by rd. If enable_write is 0, the module reads the values from the register file at the addresses specified by rs1 and rs2.
+
+* The module also includes a reset signal rst to reset the register file to 0 at the start of the simulation. The enable signal is used to enable the read operation. If enable is 0, the module sets the read_value_1 and read_value_2 outputs to 0.
+
+* The module uses an always block triggered by the positive edge of the clk signal to perform register file operations. The module includes a case statement to handle the different enable write and enable read conditions.
+
+# Limitations
+This implementation assumes that all register values are 32 bits in length and does not include any additional features such as forwarding or hazard detection. Additionally, this implementation does not include all instructions in the RISC-V instruction set architecture.
