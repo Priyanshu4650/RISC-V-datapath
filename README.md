@@ -1,4 +1,4 @@
-# RISC-V-datapath
+## RISC-V-datapath
 This Verilog module implements a simple pipeline for a RISC-V instruction set architecture. The pipeline consists of four stages:
 
 * Instruction fetch
