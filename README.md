@@ -33,3 +33,32 @@ The pipeline is implemented using a combination of registers and wires to store 
 
 # Limitations
 * This implementation is a simple pipeline and does not include features such as forwarding or branch prediction. It assumes that instructions are executed in order and does not handle hazards. Additionally, this implementation does not include all instructions in the RISC-V instruction set architecture.
+
+
+# Verilog Decoder with Clock
+This Verilog module decodes instructions for a RISC-V instruction set architecture. The decoder_with_clk module takes in a 32-bit instruction and a clock signal, and outputs the opcode, source registers, destination register, immediate value, and instruction type.
+
+# Inputs and Outputs
+The Verilog module decoder_with_clk has the following inputs and outputs:
+
+# Inputs
+* instruction - 32-bit input holding the current instruction to be decoded
+* clk - clock signal
+# Outputs
+* opcode - 17-bit output holding the opcode of the instruction being decoded
+* rs1 - 5-bit output holding the number of the first source register
+* rs2 - 5-bit output holding the number of the second source register
+* rd - 5-bit output holding the number of the destination register
+* immediate - 12-bit output holding the immediate value of the instruction being decoded
+* risl_type - 4-bit output holding the type of instruction being decoded
+* The risl_type output is an indicator of whether the instruction is an r-type, i-type, s-type, or l-type instruction. If the instruction is invalid, risl_type is set to 00.
+
+# Implementation Details
+* The decoder_with_clk module decodes the instruction based on the opcode and format of the instruction. The input instruction is decoded in the always block, triggered by the positive edge of the clk signal.
+
+* The module uses a case statement to decode the instruction based on the opcode. If the opcode matches a known R-type instruction, the module sets the risl_type output to R_type and extracts the source and destination registers from the instruction. If the opcode matches a known I-type instruction, the module sets the risl_type output to I_type and extracts the immediate value and source register from the instruction. The module also checks for load instructions and sets the risl_type output to L_type accordingly.
+
+* If the opcode matches a known S-type instruction, the module sets the risl_type output to S_type and extracts the immediate value and source registers from the instruction. Otherwise, if the opcode is not recognized, the module sets the risl_type output to 00 to indicate an invalid instruction.
+
+# Limitations
+* This implementation assumes that all instructions are 32 bits in length and does not handle unrecognized opcodes or invalid instruction formats. It also does not perform any validation on the register numbers or immediate values extracted from the instruction. Additionally, this implementation does not include all instructions in the RISC-V instruction set architecture.
